@@ -11,6 +11,7 @@ pyautogui>=0.9.53
 psutil>=5.9.0
 pywin32>=305
 uiautomation>=2.3.0
+pywinauto>=0.6.8
 typer>=0.9.0
 rich>=13.0.0
 pytest>=7.4.0

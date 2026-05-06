@@ -45,6 +45,11 @@ from whendoes.windows_api.system_info import (
 from whendoes.windows_api.app_finder import (
     find_app_path,
 )
+from whendoes.windows_api.ui_automation import (
+    UIAutomationExtractor,
+    UIAutomationExecutor,
+    UIElement,
+)
 
 __all__ = [
     "list_windows",
@@ -80,4 +85,7 @@ __all__ = [
     "get_memory_info",
     "get_disk_info",
     "find_app_path",
+    "UIAutomationExtractor",
+    "UIAutomationExecutor",
+    "UIElement",
 ]

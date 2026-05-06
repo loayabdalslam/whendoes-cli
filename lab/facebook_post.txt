@@ -1,0 +1,1 @@
+this post from whendoes-cli package its live now at github , you can control you windows and access any ui file tree over all application from your terminal powerd by groq and our cli tool
