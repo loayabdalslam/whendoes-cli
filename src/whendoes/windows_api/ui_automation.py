@@ -6,9 +6,8 @@ from dataclasses import dataclass, asdict
 
 try:
     from pywinauto import Application
-    from pywinauto.uia_defines import IFACE_NAME
-except ImportError:
-    raise ImportError("pywinauto required: pip install pywinauto")
+except ImportError as e:
+    raise ImportError(f"pywinauto required: {e}. Please run: pip install pywinauto")
 
 
 @dataclass

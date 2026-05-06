@@ -4,6 +4,7 @@ from typing import Any, Optional, Callable
 from whendoes.llm.base import BaseLLMProvider, Message
 from whendoes.agent.tool_registry import ToolRegistry
 from whendoes.agent.context import AgentContext
+from whendoes.agent.human_like_behavior import HumanLikeBehavior
 
 
 class Agent:
@@ -17,6 +18,7 @@ class Agent:
         require_approval: bool = True,
         verbose: bool = False,
         stream_callback: Optional[Callable[[str], None]] = None,
+        human_like: bool = False,
     ):
         """Initialize agent.
 
@@ -27,6 +29,7 @@ class Agent:
             require_approval: Require approval for destructive ops
             verbose: Verbose logging
             stream_callback: Callback for streaming output
+            human_like: Enable human-like behavior with delays
         """
         self.llm = llm_provider
         self.tools = tool_registry
@@ -34,6 +37,8 @@ class Agent:
         self.require_approval = require_approval
         self.verbose = verbose
         self.stream_callback = stream_callback
+        self.human_like = human_like
+        self.behavior = HumanLikeBehavior(stream_callback) if human_like else None
 
     def run(self, user_input: str, system_prompt: Optional[str] = None) -> str:
         """Run agent reasoning loop.
@@ -88,7 +93,11 @@ class Agent:
 
             # Stream thinking if callback provided
             if self.stream_callback and response.content:
-                self.stream_callback(f"💭 {response.content}\n")
+                if self.human_like and self.behavior:
+                    self.behavior.think(0.5)
+                    self.behavior.stream(f"{response.content}\n")
+                else:
+                    self.stream_callback(f"💭 {response.content}\n")
 
             # Add assistant response
             context.add_message("assistant", response.content)
@@ -104,7 +113,10 @@ class Agent:
 
                 # Stream tool call if callback provided
                 if self.stream_callback:
-                    self.stream_callback(f"🔧 Calling: {tool_call.name}({tool_call.arguments})\n")
+                    if self.human_like and self.behavior:
+                        self.behavior.execute(tool_call.name, str(tool_call.arguments))
+                    else:
+                        self.stream_callback(f"🔧 Calling: {tool_call.name}({tool_call.arguments})\n")
 
                 # Check if approval needed
                 tool = self.tools.get_tool(tool_call.name)
@@ -127,7 +139,10 @@ class Agent:
 
                 # Stream result if callback provided
                 if self.stream_callback:
-                    self.stream_callback(f"✓ Result: {str(result)[:100]}...\n")
+                    if self.human_like and self.behavior:
+                        self.behavior.success(f"{str(result)[:100]}")
+                    else:
+                        self.stream_callback(f"✓ Result: {str(result)[:100]}...\n")
 
                 # Add tool result to messages with tool_call_id
                 context.add_message(

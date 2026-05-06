@@ -283,6 +283,222 @@ def setup_tools() -> ToolRegistry:
         },
     )
 
+    # Accessibility tools
+    registry.register(
+        "read_accessibility_tree",
+        "Read accessibility tree from application (Chrome, Edge, Firefox, etc.)",
+        wapi.read_accessibility_tree,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+                "max_depth": {"type": "integer", "description": "Maximum depth to traverse (default: 8)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "find_element_by_name",
+        "Find element by name in application",
+        wapi.find_element_by_name,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+                "element_name": {"type": "string", "description": "Element name to search for"},
+            },
+            "required": ["app_name", "element_name"],
+        },
+    )
+
+    registry.register(
+        "find_elements_by_role",
+        "Find all elements with specific role (button, link, textbox, etc.)",
+        wapi.find_elements_by_role,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+                "role": {"type": "string", "description": "Element role (button, link, textbox, tab, checkbox, etc.)"},
+            },
+            "required": ["app_name", "role"],
+        },
+    )
+
+    registry.register(
+        "get_element_info",
+        "Get detailed information about an element",
+        wapi.get_element_info,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+                "element_id": {"type": "string", "description": "Element ID"},
+            },
+            "required": ["app_name", "element_id"],
+        },
+    )
+
+    registry.register(
+        "list_all_buttons",
+        "List all buttons in application",
+        wapi.list_all_buttons,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "list_all_textboxes",
+        "List all textboxes in application",
+        wapi.list_all_textboxes,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "list_all_links",
+        "List all links in application",
+        wapi.list_all_links,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "list_all_tabs",
+        "List all tabs in application",
+        wapi.list_all_tabs,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "get_page_title",
+        "Get page title from application",
+        wapi.get_page_title,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "get_page_content_summary",
+        "Get summary of page content (buttons, links, textboxes)",
+        wapi.get_page_content_summary,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+                "max_items": {"type": "integer", "description": "Maximum items to include (default: 10)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "search_element",
+        "Search for elements containing search term",
+        wapi.search_element,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+                "search_term": {"type": "string", "description": "Search term"},
+            },
+            "required": ["app_name", "search_term"],
+        },
+    )
+
+    registry.register(
+        "get_element_path",
+        "Get path to element in hierarchy",
+        wapi.get_element_path,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+                "element_id": {"type": "string", "description": "Element ID"},
+            },
+            "required": ["app_name", "element_id"],
+        },
+    )
+
+    registry.register(
+        "count_elements_by_role",
+        "Count elements by role in application",
+        wapi.count_elements_by_role,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name"},
+            },
+            "required": ["app_name"],
+        },
+    )
+
+    registry.register(
+        "get_interactive_elements",
+        "Get all interactive elements (buttons, links, textboxes, tabs, checkboxes)",
+        wapi.get_interactive_elements,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "get_visible_elements",
+        "Get all visible elements in application",
+        wapi.get_visible_elements,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
+    registry.register(
+        "get_enabled_elements",
+        "Get all enabled elements in application",
+        wapi.get_enabled_elements,
+        {
+            "type": "object",
+            "properties": {
+                "app_name": {"type": "string", "description": "Application name (default: chrome)"},
+            },
+            "required": [],
+        },
+    )
+
     registry.register(
         "launch_url",
         "Open URL in default browser",
@@ -388,6 +604,7 @@ def run_repl() -> None:
         require_approval=config.agent.require_approval,
         verbose=config.agent.verbose,
         stream_callback=stream_callback,
+        human_like=True,
     )
 
     # REPL loop
